@@ -5,10 +5,10 @@ import * as React from 'react'
 
 function useLocalStorageState(initialValue) {
   const [value, setValue] = React.useState(
-    () => window.localStorage.getItem('name') || initialValue,
+    () => window.localStorage.getItem('value') || initialValue,
   )
   React.useEffect(() => {
-    localStorage.setItem('name', value)
+    localStorage.setItem('value', value)
   }, [value])
 
   return [value, setValue]
