@@ -5,11 +5,15 @@ import * as React from 'react'
 
 function Greeting({initialName = ''}) {
   const [name, setName] = React.useState(
-    window.localStorage.getItem('name') || initialName,
+    () => readNameDataFromLocalStorage() || initialName,
   )
 
   function handleChange(event) {
     setName(event.target.value)
+  }
+
+  function readNameDataFromLocalStorage() {
+    return window.localStorage.getItem('name')
   }
 
   React.useEffect(() => {
