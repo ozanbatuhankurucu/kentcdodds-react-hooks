@@ -23,7 +23,7 @@ function Board() {
   })()
 
   function selectSquare(square) {
-    if (squares[square] !== null) return
+    if (squares[square] !== null || winner) return
 
     const squaresCopy = [...squares]
     const nextValue = calculateNextValue(squares)
@@ -38,10 +38,7 @@ function Board() {
 
   function renderSquare(i) {
     return (
-      <button
-        className="square"
-        onClick={() => (winner ? undefined : selectSquare(i))}
-      >
+      <button className="square" onClick={() => selectSquare(i)}>
         {squares[i]}
       </button>
     )
