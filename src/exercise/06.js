@@ -17,12 +17,10 @@ function PokemonInfo({pokemonName}) {
 
   const fetchData = React.useCallback(async () => {
     setStatus('pending')
-    setError(null)
-    setPokemon(null)
     try {
       const poke = await fetchPokemon(pokemonName)
-      setStatus('resolved')
       setPokemon(poke)
+      setStatus('resolved')
     } catch (err) {
       setStatus('rejected')
       setError(err)
