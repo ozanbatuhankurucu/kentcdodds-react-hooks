@@ -110,6 +110,7 @@ function PokemonForm({
   pokemonName: externalPokemonName,
   initialPokemonName = externalPokemonName || '',
   onSubmit,
+  onChange,
 }) {
   const [pokemonName, setPokemonName] = React.useState(initialPokemonName)
 
@@ -127,6 +128,7 @@ function PokemonForm({
 
   function handleChange(e) {
     setPokemonName(e.target.value)
+    onChange(e)
   }
 
   function handleSubmit(e) {
