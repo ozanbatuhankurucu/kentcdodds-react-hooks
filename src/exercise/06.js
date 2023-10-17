@@ -12,11 +12,17 @@ import {
 
 function PokemonInfo({pokemonName}) {
   const [pokemon, setPokemon] = React.useState(null)
+  const [error, setError] = React.useState(null)
 
   const fetchData = React.useCallback(async () => {
+    setError(null)
     setPokemon(null)
-    const poke = await fetchPokemon(pokemonName)
-    setPokemon(poke)
+    try {
+      const poke = await fetchPokemon(pokemonName)
+      setPokemon(poke)
+    } catch (err) {
+      setError(err)
+    }
   }, [pokemonName])
 
   React.useEffect(() => {
@@ -24,6 +30,14 @@ function PokemonInfo({pokemonName}) {
     fetchData()
   }, [pokemonName, fetchData])
 
+  if (error) {
+    return (
+      <div role="alert">
+        There was an error:{' '}
+        <pre style={{whiteSpace: 'normal'}}>{error.message}</pre>
+      </div>
+    )
+  }
   if (!pokemonName) return 'Submit a pokemon'
   if (pokemonName && !pokemon) return <PokemonInfoFallback name={pokemonName} />
   return <PokemonDataView pokemon={pokemon} />
