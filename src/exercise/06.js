@@ -34,19 +34,14 @@ function PokemonInfo({pokemonName}) {
 
   React.useEffect(() => {
     if (!pokemonName) {
-      setState(prev => ({...prev, status: 'idle'}))
+      setState(prev => ({...prev, status: 'idle', error: null}))
       return
     }
     fetchData()
   }, [pokemonName, fetchData])
 
   if (status === 'rejected') {
-    return (
-      <div role="alert">
-        There was an error:{' '}
-        <pre style={{whiteSpace: 'normal'}}>{error.message}</pre>
-      </div>
-    )
+    throw error
   }
   if (status === 'idle') return 'Submit a pokemon'
   if (status === 'pending') return <PokemonInfoFallback name={pokemonName} />

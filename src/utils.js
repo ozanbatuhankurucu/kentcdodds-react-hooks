@@ -59,10 +59,19 @@ export class ErrorBoundary extends React.Component {
     console.error(error, errorInfo)
   }
 
+  resetError = () => {
+    this.setState({hasError: false})
+  }
+
   render() {
     if (this.state.hasError) {
       // You can render any custom fallback UI
-      return <h1>Something went wrong.</h1>
+      return (
+        <div>
+          <h1>Something went wrong.</h1>
+          <button onClick={this.resetError}>Try Again</button>
+        </div>
+      )
     }
 
     return this.props.children
