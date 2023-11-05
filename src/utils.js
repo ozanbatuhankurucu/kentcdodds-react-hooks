@@ -7,7 +7,7 @@ import * as React from 'react'
  * @param {{serialize: Function, deserialize: Function}} options The serialize and deserialize functions to use (defaults to JSON.stringify and JSON.parse respectively)
  */
 
-function useLocalStorageState(
+export function useLocalStorageState(
   key,
   defaultValue = '',
   // the = {} fixes the error we would get from destructuring when no argument was passed
@@ -43,4 +43,28 @@ function useLocalStorageState(
   return [state, setState]
 }
 
-export {useLocalStorageState}
+export class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {hasError: false}
+  }
+
+  static getDerivedStateFromError(error) {
+    // Update state so the next render will show the fallback UI.
+    return {hasError: true}
+  }
+
+  componentDidCatch(error, errorInfo) {
+    // You can also log the error to an error reporting service
+    console.error(error, errorInfo)
+  }
+
+  render() {
+    if (this.state.hasError) {
+      // You can render any custom fallback UI
+      return <h1>Something went wrong.</h1>
+    }
+
+    return this.props.children
+  }
+}

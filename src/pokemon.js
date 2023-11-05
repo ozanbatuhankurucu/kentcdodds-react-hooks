@@ -128,7 +128,7 @@ function PokemonForm({
 
   function handleChange(e) {
     setPokemonName(e.target.value)
-    onChange(e)
+    onChange?.(e)
   }
 
   function handleSubmit(e) {
