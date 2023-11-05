@@ -11,25 +11,29 @@ import {
 } from '../pokemon'
 
 function PokemonInfo({pokemonName}) {
-  const [pokemon, setPokemon] = React.useState(null)
-  const [error, setError] = React.useState(null)
-  const [status, setStatus] = React.useState('idle')
+  const [state, setState] = React.useState({
+    status: 'idle',
+    pokemon: null,
+    error: null,
+  })
+  const {error, pokemon, status} = state
 
   const fetchData = React.useCallback(async () => {
-    setStatus('pending')
+    setState(prev => ({
+      ...prev,
+      status: 'pending',
+    }))
     try {
       const poke = await fetchPokemon(pokemonName)
-      setPokemon(poke)
-      setStatus('resolved')
+      setState(prev => ({...prev, status: 'resolved', pokemon: poke}))
     } catch (err) {
-      setStatus('rejected')
-      setError(err)
+      setState(prev => ({...prev, status: 'rejected', error: err}))
     }
   }, [pokemonName])
 
   React.useEffect(() => {
     if (!pokemonName) {
-      setStatus('idle')
+      setState(prev => ({...prev, status: 'idle'}))
       return
     }
     fetchData()
@@ -57,11 +61,7 @@ function App() {
 
   return (
     <div className="pokemon-info-app">
-      <PokemonForm
-        pokemonName={pokemonName}
-        onSubmit={handleSubmit}
-        onChange={e => setPokemonName(e.target.value)}
-      />
+      <PokemonForm pokemonName={pokemonName} onSubmit={handleSubmit} />
       <hr />
       <div className="pokemon-info">
         <PokemonInfo pokemonName={pokemonName} />
